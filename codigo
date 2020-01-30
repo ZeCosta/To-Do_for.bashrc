@@ -1,0 +1,134 @@
+#my to do list
+todo(){
+        echo "TO-DO options:"
+        echo "Adicionar To-Do                 -> addtodo [Nome da Tarefa] [Descrição da Tarefa]"
+	echo "Alterar To-Do                   -> alttodo [Nome da Tarefa] [Descrição da Tarefa]"
+        echo "Mostrar To-Do                   -> seetodo [Nome da Tarefa]"
+        echo "Remover To-Do                   -> removetodo [Nome da Tarefa]"
+        echo "Apagar To-Do's feitos           -> cleardonetodo"
+	echo "Listar To-Do's                  -> listtodo"
+	echo "Listar To-Do's feitos           -> listdonetodo"
+	echo "Completar To-Do                 -> donetodo [Nome da Tarefa]"
+	echo "Colocar To-Do como não completo -> undonetodo [Nome da Tarefa]"
+}
+
+#cria to do
+addtodo(){
+	if [ -z "$1"]
+	then
+		echo 'Usage: addtodo [Nome da Tarefa] [Descrição da Tarefa]'
+	else
+		file="$1"
+		content="$2"
+		path="${HOME}/ToDo/NotDone"
+		mkdir -p ${path}
+		if test -f "${path}/${file}"
+		then
+			echo to-do com esse nome ja existe
+		else
+			touch "${path}/${file}"
+			echo "${content}" > "${path}/${file}"
+		fi
+	fi
+}
+
+#altera to do
+alttodo(){
+        if [ -z "$1"]
+        then
+                echo 'Usage: alttodo [Nome da Tarefa] [Descrição da Tarefa]'
+        else
+                file="$1"
+                content="$2"
+                path="${HOME}/ToDo/NotDone"
+                mkdir -p ${path}
+                if test -f "${path}/${file}"
+                then
+                        echo "${content}" > "${path}/${file}"
+                else
+                     	echo "To-Do não existe"
+                fi
+        fi
+}
+
+#mostra a descrição do todo
+seetodo(){
+	if [ -z "$1"]
+	then
+		echo 'Usage: seetodo [Nome da Tarefa]'
+	else
+		file="$1"
+		path="${HOME}/ToDo/NotDone"
+                mkdir -p ${path}
+                if test -f "${path}/${file}"
+                then
+                        cat "${path}/${file}"
+                else
+			echo To-Do não existe
+                fi
+	
+	fi
+
+}
+
+#remove um todo dos nao acabados
+removetodo(){
+	if [ -z "$1"]
+        then
+                echo 'Usage: removetodo [Nome da Tarefa]'
+        else
+                file="$1"
+		path="${HOME}/ToDo/NotDone"
+                mkdir -p ${path}
+                if test -f "${path}/${file}"
+                then
+                        rm "${path}/${file}"
+                else
+                        echo To-Do não existe
+                fi
+        fi
+}
+
+#apaga tudo da pasta dos dones
+cleardonetodo(){
+	path2="${HOME}/ToDo/Done"
+	mkdir -p ${path2}
+	rm "${path2}/"*
+}
+
+#lista todos os to do
+listtodo(){
+	echo "To-Do's existentes"
+	path="${HOME}/ToDo/NotDone"
+	mkdir -p ${path}
+	ls ${path}
+}
+#lista todos os to do acabados
+listdonetodo(){
+	echo "To-Do's completados existentes:"
+	path2="${HOME}/ToDo/Done"
+	mkdir -p ${path2}
+        ls ${path2}
+
+}
+
+#passa um to do da pasta NotDone para a pasta Done
+donetodo(){
+	if [ -z "$1"]
+        then
+                echo 'Usage: donetodo [Nome da Tarefa]'
+        else
+                file="$1"
+		path="${HOME}/ToDo/NotDone"
+		path2="${HOME}/ToDo/Done"
+                mkdir -p ${path}
+		mkdir -p ${path2}
+                if test -f "${path}/${file}"
+                then
+                        mv "${path}/${file}" "${path2}/${file}"
+                else
+                        echo To-Do não existe
+		fi
+	fi
+}
+
